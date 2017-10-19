@@ -13,21 +13,27 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/ClockApp")
 public class ClockApp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static long refNumber = 0;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ClockApp() {
         super();
-        // TODO Auto-generated constructor stub
+        refNumber++;
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		java.util.Date date = new java.util.Date(); 
+		java.util.Date date = new java.util.Date(118, 1, 1);
 		javax.servlet.RequestDispatcher dsp = request.getRequestDispatcher("/now.jsp");
+		javax.servlet.http.HttpSession sess = request.getSession(true);
+		sess.setAttribute("date", date);
+		sess.setAttribute("caller", this);
+		refNumber++;
 		dsp.forward(request, response);
 	}
 
@@ -39,4 +45,7 @@ public class ClockApp extends HttpServlet {
 		doGet(request, response);
 	}
 
+	public long getRefNumber() {
+		return refNumber++;
+	}
 }
